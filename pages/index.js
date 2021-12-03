@@ -25,7 +25,7 @@ export default function Home() {
         <button onClick={doDispatch}>Click Me!</button>
 
         <hr />
-        {state?.docs.length > 0 && (
+        {state?.docs?.length > 0 && (
           <>
             <p>Data: {state.docs[0].name}</p>
             <p>
