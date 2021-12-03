@@ -1,16 +1,16 @@
-import Head from "next/head"
-import { useContext } from "react"
-import AppContext from "../store/appState"
+import Head from "next/head";
+import { useContext } from "react";
+import AppContext from "../store/appState";
 
 export default function Home() {
-  const { state, action, dispatch } = useContext(AppContext)
+  const { state, action, dispatch } = useContext(AppContext);
 
   const doDispatch = () => {
     const a = action("LOAD_DATA", {
       file: "https://www.stat.auckland.ac.nz/~wild/data/data_from_iNZight/Census%20at%20School-500.csv",
-    })
-    dispatch(a)
-  }
+    });
+    dispatch(a);
+  };
 
   return (
     <div className="">
@@ -32,7 +32,7 @@ export default function Home() {
               Variables:{` `}
               <select>
                 {state.docs[0].colnames.map((v) => (
-                  <option>{v}</option>
+                  <option key={v}>{v}</option>
                 ))}
               </select>
             </p>
@@ -42,5 +42,5 @@ export default function Home() {
 
       <footer className=""></footer>
     </div>
-  )
+  );
 }
