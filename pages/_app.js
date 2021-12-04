@@ -1,4 +1,5 @@
 import { AppContextProvider } from "../store/appState"
+import "../styles/globals.css"
 
 function MyApp({ Component, pageProps }) {
   return (
