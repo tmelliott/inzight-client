@@ -27,13 +27,20 @@ function HomePage() {
             <label className="font-bold uppercase text-xs">
               First, import some data
             </label>
-            <input
-              type="text"
-              placeholder="Enter a URL"
-              ref={urlRef}
-              className="border rounded outline-none py-1 px-2 text-center w-full"
-            />
-            <button onClick={doDispatch}>Click Me!</button>
+            <div className="flex w-full gap-2">
+              <input
+                type="text"
+                placeholder="Enter a URL"
+                ref={urlRef}
+                className="border rounded outline-none py-1 px-2 text-center flex-1"
+              />
+              <button
+                onClick={doDispatch}
+                className="bg-green-800 text-gray-200 shadow rounded py-1 px-4 hover:bg-green-700"
+              >
+                Import
+              </button>
+            </div>
           </form>
         ) : (
           <>

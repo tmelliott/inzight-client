@@ -55,7 +55,6 @@ export const AppContextProvider = ({ children }) => {
 
   const dispatch = async (action) => {
     if (!server || !server?.r_version) return
-    console.log("DISPATCHING", action)
     const res = await fetch("/api/dispatch", {
       method: "POST",
       headers: {
@@ -63,8 +62,10 @@ export const AppContextProvider = ({ children }) => {
       },
       body: JSON.stringify({ server: server.url, state, action }),
     })
-    const data = await res.json()
-    setState(data)
+    if (res.status === 200) {
+      const data = await res.json()
+      setState(data)
+    }
   }
 
   const context = { server, state, connect, action, dispatch }
