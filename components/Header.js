@@ -1,9 +1,9 @@
 import { useContext } from "react"
 import AppContext from "../store/appState"
-import Image from "next/image"
 
 function Header() {
   const { server } = useContext(AppContext)
+  console.log(server)
 
   return (
     <div className="bg-gray-50 shadow flex justify-between items-center p-1">

@@ -19,6 +19,7 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(async () => {
     // get the initial state
+    console.log("Server changed ...", server)
     await initState()
   }, [server])
 
@@ -27,7 +28,7 @@ export const AppContextProvider = ({ children }) => {
   }, [state])
 
   const initState = async () => {
-    if (!server || !server.r_version) return
+    if (!server || !server?.r_version) return
     const res = await fetch(`/api/new?server=${server.url}`)
     const data = await res.json()
     setState(data)
@@ -53,7 +54,8 @@ export const AppContextProvider = ({ children }) => {
   })
 
   const dispatch = async (action) => {
-    if (!server) return
+    if (!server || !server?.r_version) return
+    console.log("DISPATCHING", action)
     const res = await fetch("/api/dispatch", {
       method: "POST",
       headers: {

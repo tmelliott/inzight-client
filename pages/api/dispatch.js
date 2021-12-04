@@ -1,5 +1,8 @@
+import urljoin from "url-join"
+
 export default async function handler(req, res) {
-  const r = await fetch("http://localhost:4567/dispatch", {
+  const { server } = req.body
+  const r = await fetch(urljoin(server, "dispatch"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -7,6 +10,6 @@ export default async function handler(req, res) {
     body: JSON.stringify({ state: req.body.state, action: req.body.action }),
   })
   const data = await r.json()
-
+  console.log(data)
   res.status(200).json(data)
 }
