@@ -45,6 +45,7 @@ function HomePage() {
         ) : (
           <>
             <p>Data: {state.docs[0].name}</p>
+            <p>URL: {state.docs[0].db_url}</p>
             <p>
               Variables:{` `}
               <select>
@@ -61,3 +62,6 @@ function HomePage() {
 }
 
 export default HomePage
+
+// Next step: connect to this:
+// https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
