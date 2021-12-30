@@ -13,8 +13,6 @@ function Connect() {
     if (serverRef.current.value) connect(serverRef.current.value)
   }
 
-  console.log(server)
-
   return (
     <div className="flex-1 flex flex-col items-center pt-10">
       <Image src="/inzight_logo.svg" height={100} width={500} />

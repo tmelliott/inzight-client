@@ -3,7 +3,6 @@ import AppContext from "../store/appState"
 
 function Header() {
   const { server } = useContext(AppContext)
-  console.log(server)
 
   return (
     <div className="bg-gray-50 shadow flex justify-between items-center p-1">

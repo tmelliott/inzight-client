@@ -1,9 +1,20 @@
-import { useContext, useRef } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import AppContext from "../../store/appState"
 import Header from "../Header"
 
 function HomePage() {
   const { state, dispatch, action } = useContext(AppContext)
+
+  const { data, setData } = useState([])
+
+  useEffect(async () => {
+    if (!state) return
+    if (state.docs.length === 0) return
+    const ref = await fetch(`/api/data/${state.docs[0].key}`)
+    const dat = await ref.json()
+    console.log(dat)
+    // setData(dat)
+  }, [state])
 
   const urlRef = useRef(null)
 
