@@ -6,6 +6,7 @@ const AppContext = createContext({
   connect: () => {},
   action: () => {},
   dispatch: () => {},
+  view: () => {},
   // can add user info, etc, later:
 })
 
@@ -68,7 +69,24 @@ export const AppContextProvider = ({ children }) => {
     }
   }
 
-  const context = { server, state, connect, action, dispatch }
+  const view = async (page, size) => {
+    if (!server || !server?.r_version) return
+    const res = await fetch("/api/view", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ server: server.url, state, page, size }),
+    })
+    console.log("here", res)
+    if (res.status === 200) {
+      const data = await res.json()
+      console.log(data)
+      return data
+    }
+  }
+
+  const context = { server, state, connect, action, dispatch, view }
 
   return <AppContext.Provider value={context}>{children}</AppContext.Provider>
 }

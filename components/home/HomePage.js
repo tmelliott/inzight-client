@@ -3,15 +3,14 @@ import AppContext from "../../store/appState"
 import Header from "../Header"
 
 function HomePage() {
-  const { state, dispatch, action } = useContext(AppContext)
+  const { state, dispatch, action, view } = useContext(AppContext)
 
   const { data, setData } = useState([])
 
   useEffect(async () => {
     if (!state) return
     if (state.docs.length === 0) return
-    const ref = await fetch(`/api/data/${state.docs[0].key}`)
-    const dat = await ref.json()
+    const dat = view(1, 10) // page, nPerPage
     console.log(dat)
     // setData(dat)
   }, [state])
@@ -56,7 +55,6 @@ function HomePage() {
         ) : (
           <>
             <p>Data: {state.docs[0].name}</p>
-            <p>URL: {state.docs[0].db_url}</p>
             <p>
               Variables:{` `}
               <select>
