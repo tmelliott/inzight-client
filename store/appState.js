@@ -56,6 +56,7 @@ export const AppContextProvider = ({ children }) => {
 
   const dispatch = async (action) => {
     if (!server || !server?.r_version) return
+    console.log("STATE NOW:", state)
     const res = await fetch("/api/dispatch", {
       method: "POST",
       headers: {
@@ -65,6 +66,7 @@ export const AppContextProvider = ({ children }) => {
     })
     if (res.status === 200) {
       const data = await res.json()
+      console.log(data)
       setState(data)
     }
   }

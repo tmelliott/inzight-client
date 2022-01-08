@@ -1,17 +1,34 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import AppContext from "../../store/appState"
 import Header from "../Header"
+import VariableBox from "./VariableBox"
+import Image from "next/image"
 
 function HomePage() {
-  const { state, dispatch, action, view } = useContext(AppContext)
+  const { server, state, dispatch, action, view } = useContext(AppContext)
+  const [doc, setDoc] = useState(null)
 
-  const { data, setData } = useState([])
+  // const { data, setData } = useState([])
 
   useEffect(async () => {
     if (!state) return
-    if (state.docs.length === 0) return
-    const dat = view(1, 10) // page, nPerPage
-    console.log(dat)
+    console.log(state)
+    const activeDoc = state.documents.active[0] - 1
+    if (activeDoc < 0) return
+    const curDoc = state.documents.docs[activeDoc]
+    setDoc(curDoc)
+
+    // const res = await fetch("/api/image", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ server: server.url, state }),
+    // })
+    // console.log(res)
+
+    // const dat = view(1, 10) // page, nPerPage
+    // console.log(dat)
     // setData(dat)
   }, [state])
 
@@ -25,14 +42,31 @@ function HomePage() {
     dispatch(a)
   }
 
-  console.log(state)
+  const dispatchAction = (what, payload) => {
+    const a = action(what, payload)
+    dispatch(a)
+  }
+
+  const examples = [
+    {
+      name: "Census at School 500",
+      url: "https://www.stat.auckland.ac.nz/~wild/data/data_from_iNZight/Census%20at%20School-500.csv",
+    },
+  ]
+  const useExample = (e) => {
+    const a = action("LOAD_DATA", {
+      file: e.url,
+      name: e.name,
+    })
+    dispatch(a)
+  }
 
   return (
     <div className="flex-1">
       <Header />
 
       <div className="app">
-        {!state || state?.docs?.length === 0 ? (
+        {!state || doc === null ? (
           <form className="flex flex-col items-center w-full md:w-3/4 px-4 mx-auto mt-10 gap-4">
             <label className="font-bold uppercase text-xs">
               First, import some data
@@ -51,19 +85,59 @@ function HomePage() {
                 Import
               </button>
             </div>
+
+            <hr />
+            <p>Or try some examples:</p>
+            <ul>
+              {examples.map((eg) => (
+                <li
+                  className="text-blue-800 hover:text-blue-700 cursor-pointer"
+                  onClick={() => useExample(eg)}
+                >
+                  {eg.name}
+                </li>
+              ))}
+            </ul>
           </form>
         ) : (
-          <>
-            <p>Data: {state.docs[0].name}</p>
-            <p>
-              Variables:{` `}
-              <select>
-                {state.docs[0].colnames.map((v) => (
-                  <option key={v}>{v}</option>
-                ))}
-              </select>
-            </p>
-          </>
+          <div className="flex m-2">
+            <div className="w-1/4 bg-gray-100 rounded-xl p-2">
+              <p className="font-bold mb-2">Data: {doc.name}</p>
+
+              <VariableBox
+                name={doc.controls.controls.v1.name[0]}
+                value={doc.controls.controls.v1.value[0]}
+                options={doc.controls.controls.v1.options}
+                handler={(payload) => dispatchAction("SET_V1", payload)}
+              />
+              <VariableBox
+                name={doc.controls.controls.v2.name[0]}
+                value={doc.controls.controls.v2.value[0]}
+                options={doc.controls.controls.v2.options}
+                handler={(payload) => dispatchAction("SET_V2", payload)}
+              />
+              <VariableBox
+                name={doc.controls.controls.g1.name[0]}
+                value={doc.controls.controls.g1.value[0]}
+                options={doc.controls.controls.g1.options}
+                handler={(payload) => dispatchAction("SET_G1", payload)}
+              />
+              <VariableBox
+                name={doc.controls.controls.g2.name[0]}
+                value={doc.controls.controls.g2.value[0]}
+                options={doc.controls.controls.g2.options}
+                handler={(payload) => dispatchAction("SET_G2", payload)}
+              />
+            </div>
+
+            <div className="mx-auto">
+              {/* <Image
+                src={`/api/image?server=${server}&path=${state.graph.path}`}
+                width={state.graph.dimensions[0]}
+                height={state.graph.dimensions[1]}
+              /> */}
+            </div>
+          </div>
         )}
       </div>
     </div>
