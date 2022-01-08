@@ -18,7 +18,7 @@ export default function Home() {
       {server ? <HomePage /> : <Connect />}
 
       <footer className="bg-gray-800 text-gray-200 text-right p-2 text-xs">
-        &copy; inzight 2021
+        &copy; inzight 2022
       </footer>
     </div>
   )

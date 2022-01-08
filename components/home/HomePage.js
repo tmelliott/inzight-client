@@ -7,6 +7,7 @@ import Image from "next/image"
 function HomePage() {
   const { server, state, dispatch, action, view } = useContext(AppContext)
   const [doc, setDoc] = useState(null)
+  const [graph, setGraph] = useState("")
 
   // const { data, setData } = useState([])
 
@@ -18,14 +19,15 @@ function HomePage() {
     const curDoc = state.documents.docs[activeDoc]
     setDoc(curDoc)
 
-    // const res = await fetch("/api/image", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ server: server.url, state }),
-    // })
-    // console.log(res)
+    const res = await fetch("/api/image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ server: server.url, state }),
+    })
+    const str = await res.json()
+    setGraph(`data:image/png;base64,${str[0]}`)
 
     // const dat = view(1, 10) // page, nPerPage
     // console.log(dat)
@@ -100,8 +102,8 @@ function HomePage() {
             </ul>
           </form>
         ) : (
-          <div className="flex m-2">
-            <div className="w-1/4 bg-gray-100 rounded-xl p-2">
+          <div className="flex flex-col md:flex-row m-2">
+            <div className="md:w-96 bg-gray-100 rounded-xl p-2">
               <p className="font-bold mb-2">Data: {doc.name}</p>
 
               <VariableBox
@@ -130,12 +132,14 @@ function HomePage() {
               />
             </div>
 
-            <div className="mx-auto">
-              {/* <Image
-                src={`/api/image?server=${server}&path=${state.graph.path}`}
-                width={state.graph.dimensions[0]}
-                height={state.graph.dimensions[1]}
-              /> */}
+            <div className="ml-5">
+              {graph !== "" && (
+                <Image
+                  src={graph}
+                  width={state.graph.dimensions[0]}
+                  height={state.graph.dimensions[1]}
+                />
+              )}
             </div>
           </div>
         )}
