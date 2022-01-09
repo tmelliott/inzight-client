@@ -55,7 +55,7 @@ function HomePage() {
       url: "https://www.stat.auckland.ac.nz/~wild/data/data_from_iNZight/Census%20at%20School-500.csv",
     },
   ]
-  const useExample = (e) => {
+  const loadExample = (e) => {
     const a = action("LOAD_DATA", {
       file: e.url,
       name: e.name,
@@ -93,8 +93,9 @@ function HomePage() {
             <ul>
               {examples.map((eg) => (
                 <li
+                  key={eg.url}
                   className="text-blue-800 hover:text-blue-700 cursor-pointer"
-                  onClick={() => useExample(eg)}
+                  onClick={() => loadExample(eg)}
                 >
                   {eg.name}
                 </li>

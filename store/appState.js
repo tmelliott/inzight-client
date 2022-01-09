@@ -15,7 +15,7 @@ export const AppContextProvider = ({ children }) => {
   const [state, setState] = useState(null)
 
   useEffect(() => {
-    connect("http://localhost:4567")
+    connect(process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:4567")
   }, [])
 
   useEffect(async () => {

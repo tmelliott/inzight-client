@@ -23,7 +23,9 @@ function VariableBox({ name, value, options, handler }) {
       >
         <option value=""></option>
         {options.map((o) => (
-          <option value={o}>{o}</option>
+          <option key={o} value={o}>
+            {o}
+          </option>
         ))}
       </select>
     </div>
