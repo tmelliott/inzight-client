@@ -10,6 +10,10 @@ RUN --mount=type=cache,id=yarn,sharing=locked,target=/usr/local/share/.cache/yar
 # Rebuild the source code only when needed
 FROM node:14-alpine AS builder
 WORKDIR /app
+
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn build
@@ -21,14 +25,12 @@ WORKDIR /app
 ARG APP_ENV=production
 ARG NODE_ENV=production
 ARG PORT=3000
-ARG SERVER_URL
 
 ENV APP_ENV=${APP_ENV} \
     NODE_ENV=${NODE_ENV} \
     PORT=${PORT} \
 # This allows to access Graphql Playground
-    APOLLO_PRODUCTION_INTROSPECTION=false \
-    NEXT_PUBLIC_SERVER_URL=${SERVER_URL}
+    APOLLO_PRODUCTION_INTROSPECTION=false
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001

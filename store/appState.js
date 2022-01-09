@@ -15,7 +15,7 @@ export const AppContextProvider = ({ children }) => {
   const [state, setState] = useState(null)
 
   useEffect(() => {
-    connect(process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:4567")
+    connect(process.env.NEXT_PUBLIC_SERVER_URL)
   }, [])
 
   useEffect(async () => {
@@ -36,6 +36,11 @@ export const AppContextProvider = ({ children }) => {
   }
 
   const connect = async (url) => {
+    if (!url) {
+      console.log("No URL specified.")
+      return
+    }
+
     console.log("Connecting to " + url)
     // first get info
     const res = await fetch(`/api/connect?server=${url}`)
